@@ -9,7 +9,7 @@ export const blogRouter = new Hono();
 
 // Middleware..
 // @ts-ignore
-blogRouter.use('/api/v1/blog/*',async (c,next)=>{
+blogRouter.use('/*',async (c,next)=>{
     const authorization = c.req.header('Authorization');
     if(authorization){
       // @ts-ignore
@@ -33,7 +33,7 @@ blogRouter.use('/api/v1/blog/*',async (c,next)=>{
   
   // Routes ...
   
-  blogRouter.get('/api/v1/blog/:id',async (c) => {
+  blogRouter.get('/:id',async (c) => {
     // Prisma connection
     const prisma = new PrismaClient({
       //  @ts-ignore
@@ -57,7 +57,7 @@ blogRouter.use('/api/v1/blog/*',async (c,next)=>{
       })
   })
   
-  blogRouter.get('/api/v1/blog/bulk',async (c) => {
+  blogRouter.get('/bulk',async (c) => {
     const prisma = new PrismaClient({
       //  @ts-ignore
         datasourceUrl: c.env.DATABASE_URL,
@@ -75,7 +75,7 @@ blogRouter.use('/api/v1/blog/*',async (c,next)=>{
     })
   })
   
-  blogRouter.post('/api/v1/blog',async (c) => {
+  blogRouter.post('/',async (c) => {
     // @ts-ignore
     const userid = c.get('userId');
     const prisma = new PrismaClient({
@@ -101,7 +101,7 @@ blogRouter.use('/api/v1/blog/*',async (c,next)=>{
   
   
   
-    blogRouter.put('/api/v1/blog', async (c) => {
+    blogRouter.put('/', async (c) => {
       // @ts-ignore
       const userId = c.get('userId');
       const prisma = new PrismaClient({
