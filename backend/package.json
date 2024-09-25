@@ -7,11 +7,14 @@
   "dependencies": {
     "@prisma/client": "^5.19.1",
     "@prisma/extension-accelerate": "^1.1.0",
+    "@vveksngh/medium-common": "^1.0.0",
+    "buffer": "^6.0.3",
     "hono": "^4.6.2",
     "prisma": "^5.19.1"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20240529.0",
+    "@types/node": "^20.16.6",
     "wrangler": "^3.57.2"
   }
 }

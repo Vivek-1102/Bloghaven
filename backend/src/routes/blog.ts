@@ -2,46 +2,51 @@ import { PrismaClient } from '@prisma/client/edge'
 import { withAccelerate } from '@prisma/extension-accelerate'
 import { Hono } from 'hono';
 import { verify} from 'hono/jwt';
+import { createBlogInput, updateBlogInput } from "@vveksngh/medium-common";
 
 
-
-export const blogRouter = new Hono();
+export const blogRouter = new Hono<{
+	Bindings: {
+		DATABASE_URL: string;
+		JWT_SECRET: string;
+	},
+	Variables: { userId: string }
+}>();
 
 // Middleware..
-// @ts-ignore
-blogRouter.use('/*',async (c,next)=>{
-    const authorization = c.req.header('Authorization');
-    if(authorization){
-      // @ts-ignore
-    const token = authorization.split(' ')[1];
-    // @ts-ignore
-    const payload = await verify(token,c.env.JWT_SECRET);
-    if(!payload){
-      c.status(401);
-      return c.json({error: "unauthorized"});
-    }
-    // @ts-ignore
-    c.set("userId",payload.id);
-    await next();
-    }
-    c.status(401);
-    return c.json({
-      message : "unauthorized"
-    }); 
-  })
+blogRouter.use("/*", async (c, next) => {
+  const authHeader = c.req.header("authorization") || "";
+  const token = authHeader.split(" ")[1];
+  try {
+      const user = await verify(token, c.env.JWT_SECRET);
+      if (user) {
+          c.set("userId", String(user.id));
+          await next();
+      } else {
+          c.status(403);
+          return c.json({
+              message: "You are not logged in"
+          })
+      }
+  } catch(e) {
+      c.status(403);
+      return c.json({
+          message: "You are not logged in"
+      })
+  }
+});
   
   
   // Routes ...
   
-  blogRouter.get('/:id',async (c) => {
+  blogRouter.get('/get/:id',async (c) => {
     // Prisma connection
     const prisma = new PrismaClient({
-      //  @ts-ignore
         datasourceUrl: c.env.DATABASE_URL,
       }).$extends(withAccelerate());
     
       const id = c.req.param('id');
-      const post = await prisma.post.findFirst({
+      const post = await prisma.post.findUnique({
         where:{
           id : id
         }
@@ -59,11 +64,21 @@ blogRouter.use('/*',async (c,next)=>{
   
   blogRouter.get('/bulk',async (c) => {
     const prisma = new PrismaClient({
-      //  @ts-ignore
         datasourceUrl: c.env.DATABASE_URL,
       }).$extends(withAccelerate());
       
-    const posts = await prisma.post.findMany({});
+    const posts = await prisma.post.findMany({
+      select: {
+        content: true,
+        title: true,
+        id: true,
+        author: {
+          select: {
+            name: true
+          }
+        }
+      }
+    });
     if(!posts){
       return c.json({
         message:"No posts"
@@ -76,45 +91,53 @@ blogRouter.use('/*',async (c,next)=>{
   })
   
   blogRouter.post('/',async (c) => {
-    // @ts-ignore
     const userid = c.get('userId');
     const prisma = new PrismaClient({
-      //  @ts-ignore
         datasourceUrl: c.env.DATABASE_URL,
       }).$extends(withAccelerate());
   
     const body = await c.req.json();
+    const { success } = createBlogInput.safeParse(body);
+    if (!success) {
+        c.status(411);
+        return c.json({
+            message: "Inputs not correct"
+        })
+    }
     
-    const post = prisma.post.create({
+    const post =await prisma.post.create({
       data : {
         title : body.title,
         content: body.content,
-        // @ts-ignore
         authorid: userid
       }
     })  
    return c.json({
     message:"Successfully posted",
-    post
+    id:post.id
    })
   })
   
   
   
     blogRouter.put('/', async (c) => {
-      // @ts-ignore
       const userId = c.get('userId');
       const prisma = new PrismaClient({
-        // @ts-ignore
         datasourceUrl: c.env?.DATABASE_URL	,
       }).$extends(withAccelerate());
     
       const body = await c.req.json();
-      prisma.post.update({
+      const { success } = updateBlogInput.safeParse(body);
+      if (!success) {
+          c.status(411);
+          return c.json({
+              message: "Inputs not correct"
+          })
+      }
+      const post = await prisma.post.update({
         where: {
           id: body.id,
-          // @ts-ignore
-          authorId: userId
+          authorid: userId
         },
         data: {
           title: body.title,
@@ -122,5 +145,8 @@ blogRouter.use('/*',async (c,next)=>{
         }
       });
     
-      return c.text('updated post');
+      return c.json({
+        message :"Updated successfully",
+        post
+      });
     });
