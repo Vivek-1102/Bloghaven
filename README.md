@@ -1,3 +1,3 @@
-npm install \n
-  npm run dev \n
-npm run deploy
+** npm install **
+**  npm run dev **
+**npm run deploy**
