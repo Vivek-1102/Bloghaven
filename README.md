@@ -1,2 +1,3 @@
-This is the first sentence.<br>
-This is the second sentence.
+npm install.<br>
+npm run dev.<br>
+npm run deploy.
