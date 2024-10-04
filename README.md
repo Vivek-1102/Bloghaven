@@ -1,6 +1,6 @@
-# MyApp
+# Bloghaven
 
-MyApp is a modern web application built with a robust tech stack, focused on scalability, performance, and security.
+Bloghaven is a modern web blogging application built with a robust tech stack and security.Where user can read, create and explore blogs.
 
 ## Tech Stack
 
