@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client/edge'
 import { withAccelerate } from '@prisma/extension-accelerate'
 import { sign } from 'hono/jwt';
 import { Buffer } from 'buffer';
-import { signupInput, signinInput } from '@vveksngh/medium-common';
+import { signinInput, signupInput } from '@vveksngh/medium-common';
 
 export async function hashFunction(message: string): Promise<string> {
   const encodedMsg = new TextEncoder().encode(message);
@@ -28,10 +28,11 @@ export const userRouter = new Hono<{
 }>();
 
 userRouter.post('/signup',async (c) => {
+  console.log("hi");
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
-
+  console.log("hello");
   const body = await c.req.json();
   const { success } = signupInput.safeParse(body);
     if (!success) {
@@ -40,11 +41,12 @@ userRouter.post('/signup',async (c) => {
             message: "Inputs not correct"
         })
     }
+    console.log(success);
   const hashedPass = await hashFunction(body.password);
   try {
     const user = await prisma.user.create({
       data:{
-        email : body.email,
+        email : body.username,
         password : hashedPass
       }
     })
@@ -55,7 +57,7 @@ userRouter.post('/signup',async (c) => {
   })
   }catch(e){
     c.status(403);
-    return c.json({error: "error while signing up"});
+    return c.json({error: "error while signing up at backend"});
   }
 })
 
@@ -75,7 +77,7 @@ userRouter.post('/signup',async (c) => {
   
       const user = await prisma.user.findUnique({
         where: {
-          email:body.email,
+          email:body.username,
       }
     })
     if(!user){

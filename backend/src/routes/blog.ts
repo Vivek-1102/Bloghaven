@@ -15,8 +15,8 @@ export const blogRouter = new Hono<{
 
 // Middleware..
 blogRouter.use("/*", async (c, next) => {
-  const authHeader = c.req.header("authorization") || "";
-  const token = authHeader.split(" ")[1];
+  const token = c.req.header("authorization") || "";
+  
   try {
       const user = await verify(token, c.env.JWT_SECRET);
       if (user) {
@@ -49,7 +49,16 @@ blogRouter.use("/*", async (c, next) => {
       const post = await prisma.post.findUnique({
         where:{
           id : id
-        }
+        },select: {
+          id: true,
+          title: true,
+          content: true,
+          author: {
+              select: {
+                  name: true
+              }
+          }
+      }
       });
       if(!post){
         c.status(404);
