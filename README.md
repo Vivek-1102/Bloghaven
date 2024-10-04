@@ -33,8 +33,8 @@ To run the application locally, follow these steps:
 
 1. **Clone the repository:**
     ```bash
-    git clone https://github.com/yourusername/yourapp.git
-    cd yourapp
+    git clone https://github.com/Vivek-1102/Bloghaven
+    cd Bloghaven
     ```
 
 2. **Install dependencies:**
@@ -47,13 +47,6 @@ To run the application locally, follow these steps:
     ```bash
     cd common
     npm install
-    npm run build
-    npm link
-    ```
-
-    Then, go back to the root folder and link the package:
-    ```bash
-    npm link common-package-name
     ```
 
 4. **Configure environment variables:**
