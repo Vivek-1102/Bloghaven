@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import axios from "axios";
 import { BACKEND_URL } from "../config";
+import { useNavigate } from "react-router-dom";
 
 
 export interface Blog {
@@ -16,8 +17,12 @@ export const useBlog = ({ id }: { id: string }) => {
     const [loading, setLoading] = useState(true);
     const [blog, setBlog] = useState<Blog>();
 
-    useEffect(() => {
+    const navigate = useNavigate();
 
+    useEffect(() => {
+        if(localStorage.token == ""){
+            navigate("/");
+        }
         async function fetchData(){
             const res =await axios.get(`${BACKEND_URL}/api/v1/blog/get/${id}`, {
                 headers: {
@@ -28,8 +33,10 @@ export const useBlog = ({ id }: { id: string }) => {
             setBlog(post);
             setLoading(false);
         }
+        
 
         fetchData();
+        
         
     }, [id])
 
@@ -42,8 +49,12 @@ export const useBlog = ({ id }: { id: string }) => {
 export const useBlogs = () => {
     const [loading, setLoading] = useState(true);
     const [blogs, setBlogs] = useState<Blog[]>([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
+        if(localStorage.token == ""){
+            navigate("/");
+        }
         async function fetchData(){
             const res =await axios.get(`${BACKEND_URL}/api/v1/blog/bulk`, {
                 headers: {

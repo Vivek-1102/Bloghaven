@@ -45,29 +45,16 @@ export const LandingPage = () => {
             />
           </div>
         </section>
-
-        {/* Articles Grid */}
-        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {/* Example article card */}
-          {Array.from({ length: 6 }, (_, index) => (
-            <article key={index} className="border rounded-lg p-4 hover:shadow-lg transition-shadow duration-200">
-              <h3 className="text-xl font-semibold">Article Title {index + 1}</h3>
-              <p className="mt-2">A short excerpt of the article goes here...</p>
-              <div className="mt-4 text-sm text-gray-600">By Author | Oct 1, 2024</div>
-              <a href="#" className="text-blue-500 hover:underline mt-2 block">Read More</a>
-            </article>
-          ))}
-        </section>
       </main>
 
       {/* Footer */}
       <footer className="py-6 text-center border-t border-gray-300">
         <p>© 2024 Medium. All rights reserved.</p>
         <nav className="flex justify-center space-x-4 mt-2">
-          <a href="#" className="hover:text-gray-700">About</a>
-          <a href="#" className="hover:text-gray-700">Contact</a>
-          <a href="#" className="hover:text-gray-700">Privacy Policy</a>
-          <a href="#" className="hover:text-gray-700">Terms of Service</a>
+          <a className="hover:text-gray-700">About</a>
+          <a className="hover:text-gray-700">Contact</a>
+          <a className="hover:text-gray-700">Privacy Policy</a>
+          <a className="hover:text-gray-700">Terms of Service</a>
         </nav>
       </footer>
     </>
