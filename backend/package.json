@@ -10,7 +10,7 @@
     "@vveksngh/medium-common": "^1.0.0",
     "buffer": "^6.0.3",
     "cors": "^2.8.5",
-    "hono": "^4.6.2",
+    "hono": "^4.6.9",
     "prisma": "^5.19.1"
   },
   "devDependencies": {

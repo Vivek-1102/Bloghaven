@@ -43,6 +43,7 @@ userRouter.post('/signup',async (c) => {
     }
     console.log(success);
   const hashedPass = await hashFunction(body.password);
+  console.log(hashedPass);
   try {
     const user = await prisma.user.create({
       data:{

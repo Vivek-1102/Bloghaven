@@ -9,6 +9,8 @@ export const Publish = () => {
     const [description, setDescription] = useState("");
     const navigate = useNavigate();
 
+
+    
     return <div>
         <Appbar />
         <div className="flex justify-center w-full pt-8"> 
@@ -37,6 +39,7 @@ export const Publish = () => {
         </div>
     </div>
 }
+
 
 
 function TextEditor({ onChange }: {onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void}) {

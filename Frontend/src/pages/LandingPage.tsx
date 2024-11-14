@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 export const LandingPage = () => {
 
   const navigate = useNavigate();
+  const token = localStorage.getItem('token');
   return (
     <>
       {/* Header Navigation */}
@@ -10,7 +11,7 @@ export const LandingPage = () => {
         <div className="text-2xl font-bold">Medium</div>
         <nav className="flex items-center space-x-6">
           <a href="/about" className="hover:text-gray-700">Our Story</a>
-          <a href="/publish" className="hover:text-gray-700">Write</a>
+          <a href={token ? "/publish" : "/signin"} className="hover:text-gray-700">Write</a>
           <a href="/signin" className="hover:text-gray-700">Sign In</a>
           <button onClick={()=>{navigate("/signup")}} className="bg-green-500 text-white px-4 py-2 rounded-full hover:bg-green-600">
             Get Started
@@ -31,7 +32,13 @@ export const LandingPage = () => {
               stories & ideas
             </h2>
             <p className="mt-4 text-lg">A place to read, write, and deepen your understanding</p>
-            <button onClick={()=>{navigate("/signin")}} className="bg-green-500 text-white px-4 py-2 rounded-full hover:bg-green-600 mt-6">
+            <button onClick={()=>{
+              if(token){
+                navigate("/blog");
+              }else{
+                navigate("/signin");
+              }
+              }} className="bg-green-500 text-white px-4 py-2 rounded-full hover:bg-green-600 mt-6">
               Start Reading
             </button>
           </div>

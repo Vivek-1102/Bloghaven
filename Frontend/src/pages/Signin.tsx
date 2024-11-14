@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { LabelledInput } from "../components/LabelledInput";
-import { SigninQuote } from "../components/signinQuote";
+import { SigninQuote } from "../components/SigninQuote";
 import { SigninInput } from "@vveksngh/medium-common";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
