@@ -34,7 +34,7 @@ export const BlogCard = ({
             </div>
             <div className="text-slate-500 text-sm font-thin pt-4 flex justify-between">
                 {`${Math.ceil(content.length / 100)} minute(s) read`}
-                <svg className="h-8 w-8 text-black-500"  width="12" height="12" viewBox="0 0 24 24" stroke="currentColor" fill="fill" stroke-linecap="round" stroke-linejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <path d="M9 4h6a2 2 0 0 1 2 2v14l-5-3l-5 3v-14a2 2 0 0 1 2 -2" /></svg>
+                <svg className="h-8 w-8 text-black-500"  width="12" height="12" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <path d="M9 4h6a2 2 0 0 1 2 2v14l-5-3l-5 3v-14a2 2 0 0 1 2 -2" /></svg>
             </div>
         </div>
     </Link>

@@ -62,7 +62,8 @@ export const useBlogs = () => {
                 }
               });
             const posts = res.data.posts;
-            setBlogs(posts);
+            const postArray = posts.reverse();
+            setBlogs(postArray);
             setLoading(false);
         }
 
